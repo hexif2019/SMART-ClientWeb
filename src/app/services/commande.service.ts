@@ -66,21 +66,21 @@ export class CommandeService {
   getCommandesEnCour(userid: string){
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
-      this.http.get<Commande[]>('/api/getCommandesEnCour/${userid}')
+      this.http.get<Commande[]>('/api/getCommandesEnCour/' + userid)
     ).map(commandes => this.addCommandesDiplayData(commandes))
   }
 
   getCommandesArchiver(id: string) {
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
-      this.http.get<Commande[]>('/api/getCommandesArchiver/${userid}')
+      this.http.get<Commande[]>('/api/getCommandesArchiver/' + userid)
     ).map(commandes => this.addCommandesDiplayData(commandes))
   }
 
   getLastCommandes(id: string) {
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
-      this.http.get<Commande[]>('/api/getLastCommandes/${userid}')
+      this.http.get<Commande[]>('/api/getLastCommandes/' + userid)
     ).map(commandes => this.addCommandesDiplayData(commandes))
   }
 }
