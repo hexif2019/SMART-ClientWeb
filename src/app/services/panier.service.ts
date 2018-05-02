@@ -64,16 +64,16 @@ export class PanierService {
       this.http.get<Commande>('api/getPanier/' + userid)
     ).map(
       commande => {
-        if(!_.isEqual(commande, this.panier)){
+        if (!_.isEqual(commande, this.panier)) {
           this.setPanier(
             commande,
             this.panier ? "reLoad" : "load",
             this.panier ? "Votre panier a étais changer par une autre page!" : "Panier charger"
           );
-        };
-        return commande;
+        }
+        return this.panier;
       }
-    )
+    );
   }
 
   public getMagasinsOfResidence(residenceid: string){
@@ -147,11 +147,15 @@ export class PanierService {
           this.updatePanier(userid,panier,  "removeArticle", "Article suprimer", articleCommande).subscribe(
             next => { observer.next(next); observer.complete();},
             error => observer.error(error)
-          )
+          );
         },
         error => observer.error(error)
-      )
+      );
     });
+  }
+
+  public changeDate(date: string) {
+    this.panier.heureLivraison = '2018-5-2';
   }
 
   public changeQteArticle(userid: string, magasin: Magasin, article: Article, qte: number):Observable<Commande>{

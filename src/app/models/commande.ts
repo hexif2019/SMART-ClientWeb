@@ -11,5 +11,6 @@ export class Commande {
   user?: User;
   residence?: Residence;
   display?: any;
+  heureLivraison?: string;
 }
 

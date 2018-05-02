@@ -1,8 +1,10 @@
 {
   "id": "20001",
   "etat": "",
-  "prix": 105,
-  "magasinsCommande": [{
+  "prix": 1055,
+  "heureLivraison": "2018-05-02",
+  "magasins": [{
+    "denomination": "Carrefour",
     "id": "30001",
     "adresse": "4 Place Charles Hernu",
     "codePostal": 69100,
@@ -14,13 +16,13 @@
       "longitude": 45.770142,
       "latitude": 4.863079
     },
-    "produitsCommande": [
+    "produits": [
       {
         "id": "40001",
         "denomination": "Cheeseburger",
         "description": "A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty, but the burger can include many variations in structure, ingredients, and composition",
         "img": "https://en.wikipedia.org/wiki/Cheeseburger#/media/File:Cheeseburger.jpg",
-        "quantite": 2,
+        "nb": 2,
         "prix": 320,
         "prixTotal": 640
       },
@@ -29,7 +31,7 @@
         "denomination": "Chili burger",
         "description": "A chili burger (also known as a chili size, or simply size, stemming from \"hamburger size\") is a type of hamburger",
         "img": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Chili_burger_%28cropped%29.jpg",
-        "quantite": 1,
+        "nb": 1,
         "prix": 415,
         "prixTotal": 415
       }

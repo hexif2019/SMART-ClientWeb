@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {UserService} from "../../services/user.service";
-import {Commande} from "../../models/commande";
-import {PanierService} from "../../services/panier.service";
-import {Magasin} from "../../models/magasin.model";
-import {Article} from "../../models/article.model";
-import * as _ from "lodash";
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../services/user.service';
+import {Commande} from '../../models/commande';
+import {PanierService} from '../../services/panier.service';
+import {Magasin} from '../../models/magasin.model';
+import {Article} from '../../models/article.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-page-basket',
@@ -14,14 +14,16 @@ import * as _ from "lodash";
 export class PageBasketComponent implements OnInit {
 
   panier: Commande;
-  infoArticles : {article:Article, magasin:Magasin}[];
+  infoArticles: { article: Article, magasin: Magasin }[];
+  dateLivraison;
 
-  msgError(msg: string){
+  msgError(msg: string) {
     console.log(msg);
   }
 
   constructor(private panierService: PanierService,
-              private userService: UserService) { }
+              private userService: UserService) {
+  }
 
   ngOnInit() {
     this.userService.requirLogin().then(user => {
@@ -34,16 +36,36 @@ export class PageBasketComponent implements OnInit {
               this.infoArticles,
               magasin.produits.map(article => {
                 return {
-                  article:article,
-                  magasin:magasin
+                  article: article,
+                  magasin: magasin
                 };
               })
             );
-          })
+          });
         },
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
   }
 
+  remove(article: Article, magasin: Magasin) {
+    console.log('in func remove');
+    this.userService.requirLogin().then(user => {
+      this.panierService.removeArticle(user.id, magasin, article).subscribe(
+        panier => {
+          this.panier = panier;
+        },
+        error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
+      );
+    });
+  }
+
+  changeDate(date: any) {
+    if (date && date.day) {
+      console.log(date);
+      this.panierService.changeDate(date.year + '-' + date.month + '-' + date.day);
+    } else {
+      console.log('not a date:', date);
+    }
+  }
 }

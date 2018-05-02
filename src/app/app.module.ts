@@ -18,13 +18,14 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { HttpClientModule } from '@angular/common/http';
 import { RechercherArticleComponent } from './rechercher-article/rechercher-article.component';
 import {BrowserModule } from '@angular/platform-browser';
-import {NavbarComponent} from './navbar/navbar.component'
+import {NavbarComponent} from './navbar/navbar.component';
 import { AlertModule} from 'ngx-bootstrap';
 import { PageHomeComponent } from './pages/page-home/page-home.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import {PanierService} from './services/panier.service';
 import { PrixPipe } from './pipes/prix.pipe';
-import {CommandeService} from "./services/commande.service";
+import {CommandeService} from './services/commande.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -56,13 +57,14 @@ const appRoutes: Routes = [
   imports: [
     AlertModule,
     BsDropdownModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot(appRoutes,{ enableTracing: true }),
     BrowserModule,
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [UserService, ResidenceService, PanierService, CommandeService],
   bootstrap: [AppComponent],
