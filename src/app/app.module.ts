@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ResidanceService} from './services/residance.service';
+import { ResidanceService} from './services/residence.service';
 import { RouterModule, Routes } from '@angular/router';
 import { PageLoginComponent } from './pages/page-login/page-login.component';
 import { PageShopComponent } from './pages/page-shop/page-shop.component';
