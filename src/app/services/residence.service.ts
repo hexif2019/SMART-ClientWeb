@@ -13,7 +13,7 @@ export class ResidenceService {
     //TODO ONAPI return this.http.post<Residence[]>('/api/findResidanceFormCodePostal',{codePostal: codePostal});
     return fakeapi(
       this.http.get<Residence[]>('/api/findResidenceFormCodePostal.json'),
-      this.http.get<Residence[]>('/api/findResidenceFormCodePostal/${codePostal}')
+      this.http.get<Residence[]>('/api/findResidenceFormCodePostal/'+codePostal)
   );
   }
 }
