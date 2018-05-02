@@ -20,12 +20,23 @@
       <input type="email" name="email" placeholder="your.email@email.com" [ngClass]="{disable: loadLogin}" [(ngModel)]="email">
       <input type="password" name="pass" placeholder="Password" [ngClass]="{disable: loadLogin}" [(ngModel)]="password" #name="ngModel">
       <input type="text" name="codepostal" placeholder="Code Postal" max="5" [formControl]="codepostal">
-      <div class="list-group">
-        <a href="javascript:void(0)" *ngFor="let res of residances" (click)="residance = res" class="list-group-item list-group-item-action" [ngClass]="{active: residance === res}">
+
+      <div class="list-group mb-2">
+        <div *ngIf="residances.length > 3">
+          <input type="text" name="rechercher" placeholder="Rechercher" [(ngModel)]="recherche" class="list-group-item">
+        </div>
+
+        <a href="javascript:void(0)" *ngFor="let res of residances | filter :recherche" (click)="residance = res" class="list-group-item list-group-item-action" [ngClass]="{active: residance === res}">
           {{ res.adresse }}, {{ res.codePostal }} {{ res.ville }}
         </a>
+        <div *ngIf="codepostal.value && codepostal.value.length === 5 && residances.length === 0" class="list-group-item list-group-item-action disabled">
+          Vous ne pouvez pas beneficier de se service!
+        </div>
+        <div *ngIf="residances && residances.length > 0 && (residances | filter :recherche).length === 0" class="list-group-item list-group-item-action disabled">
+          Pas de residance trouver
+        </div>
       </div>
-      <input type="submit" name="login" class="login loginmodal-submit" [ngClass]="{disable: loadLogin}" value="Login" >
+      <input type="submit" name="login" class="login loginmodal-submit" [ngClass]="{disable: loadLogin}" value="Register" >
     </form>
     <div class="login-help">
       <a href="javascript:void(0)" (click)="showRegister = false">Login</a>

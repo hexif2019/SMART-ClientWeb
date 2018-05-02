@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {User} from "../models/user";
 import {FormControl} from "@angular/forms";
-import {ResidanceService} from "../services/residance.service";
+import {ResidenceService} from "../services/residence.service";
 import {Residence} from "../models/residence";
 
 @Component({
@@ -13,6 +13,8 @@ import {Residence} from "../models/residence";
 export class LoginComponent {
 
   residances: Residence[] = [];
+
+  recherche: string;
 
   nom: string;
   prenom: string;
@@ -32,7 +34,7 @@ export class LoginComponent {
   @Output() onLogin = new EventEmitter<User>();
 
   constructor(private userService: UserService,
-              private residanceService: ResidanceService) {
+              private residanceService: ResidenceService) {
 
     this.codepostal.valueChanges.subscribe((value) => {
       this.valideCp = /^[0-9]{5}$/.test(value);
