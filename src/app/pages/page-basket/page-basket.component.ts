@@ -5,6 +5,7 @@ import {PanierService} from "../../services/panier.service";
 import {Magasin} from "../../models/magasin.model";
 import {Article} from "../../models/article.model";
 import * as _ from "lodash";
+import {ScriptService} from "../../services/script.service";
 
 @Component({
   selector: 'app-page-basket',
@@ -16,27 +17,43 @@ export class PageBasketComponent implements OnInit {
   panier: Commande;
   infoArticles : {article:Article, magasin:Magasin}[];
 
-  paypalCfg = {
+  private paypalCfg = {
 
-    env: 'sandbox', // 'production' or 'sandbox'
+    env: 'sandbox', // sandbox | production
 
-    commit: true, // Show a 'Pay Now' button
+    // Show the buyer a 'Pay Now' button in the checkout flow
+    commit: true,
 
-    payment: function() {
-      return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
-        return data.id;
-      });
+    // payment() is called when the button is clicked
+    payment: () => {
+
+      // Set up a url on your server to create the payment
+      var CREATE_URL = '/api/pay';
+
+      // Make a call to your server to set up the payment
+      return this.getPaypal().request.post(CREATE_URL)
+        .then(function(res) {
+          return res.paymentID;
+        });
     },
 
-    onAuthorize: function(data) {
-      return paypal.request.post(EXECUTE_PAYMENT_URL, {
-        paymentID: data.paymentID,
-        payerID:   data.payerID
-      }).then(function() {
+    // onAuthorize() is called when the buyer approves the payment
+    onAuthorize: (data, actions) => {
 
-        // The payment is complete!
-        // You can now show a confirmation message to the customer
-      });
+      // Set up a url on your server to execute the payment
+      const EXECUTE_URL = '/api/pay/success';
+
+      // Set up the dat you need to pass to your server
+      const dataSend = {
+        paymentID: data.paymentID,
+        payerID: data.payerID
+      };
+
+      // Make a call to your server to execute the payment
+      return this.getPaypal().request.post(EXECUTE_URL, dataSend)
+        .then(function (res) {
+          window.alert('Payment Complete!');
+        });
     }
 
   };
@@ -46,7 +63,8 @@ export class PageBasketComponent implements OnInit {
   }
 
   constructor(private panierService: PanierService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private scriptService: ScriptService) { }
 
   ngOnInit() {
     this.userService.requirLogin().then(user => {
@@ -69,6 +87,14 @@ export class PageBasketComponent implements OnInit {
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
+    this.scriptService.loadScript('paypal').then(_=>{
+      this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
+    })
+  }
+
+  private getPaypal(): any {
+    return window['paypal'];
+
   }
 
 }
