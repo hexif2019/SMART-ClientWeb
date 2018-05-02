@@ -70,14 +70,14 @@ export class CommandeService {
     ).map(commandes => this.addCommandesDiplayData(commandes))
   }
 
-  getCommandesArchiver(id: string) {
+  getCommandesArchiver(userid: string) {
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
       this.http.get<Commande[]>('/api/getCommandesArchiver/' + userid)
     ).map(commandes => this.addCommandesDiplayData(commandes))
   }
 
-  getLastCommandes(id: string) {
+  getLastCommandes(userid: string) {
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
       this.http.get<Commande[]>('/api/getLastCommandes/' + userid)
