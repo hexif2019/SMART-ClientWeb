@@ -96,7 +96,7 @@ export class PanierService {
   public updatePanier(userid: string,panier: Commande,  eventName: string, eventMsg ?: string, eventData ?: any): Observable<Commande>{
     return fakeapi(
       this.http.get<Commande>('api/commande.json'),
-      this.http.post<Commande>('api/updatePanier/'+userid, panier)
+      this.http.post<Commande>('api/updatePanier/', panier)
     ).map(panier => {
       this.setPanier(panier,  eventName, eventMsg, eventData);
       return panier;
