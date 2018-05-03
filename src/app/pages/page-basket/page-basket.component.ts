@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {Commande} from "../../models/commande";
 import {PanierService} from "../../services/panier.service";
@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
   templateUrl: './page-basket.component.html',
   styleUrls: ['./page-basket.component.scss']
 })
-export class PageBasketComponent implements OnInit {
+export class PageBasketComponent implements OnInit, AfterViewInit {
 
   panier: Commande;
   infoArticles: { article: Article, magasin: Magasin }[];
@@ -133,9 +133,12 @@ export class PageBasketComponent implements OnInit {
     console.log("TODO Payment fail"); //TODO
   }
 
-  initPayBtn() {
+  ngAfterViewInit() {
+    console.log("initPayBtn");
     this.scriptService.loadScript('paypal').then(() => {
-      this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
+      setTimeout(()=>this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container"),1000);
     });
+  }
+  initPayBtn() {
   }
 }
