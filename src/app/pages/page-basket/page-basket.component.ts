@@ -82,7 +82,7 @@ export class PageBasketComponent implements OnInit {
   changeDate(date: any) {
     if (date && date.day) {
       console.log(date);
-      this.panierService.changeDate(JSON.stringify(new Date(date.year + '-' + date.month + '-' + date.day)));
+      this.panierService.changeDate((new Date(date.year + '-' + date.month + '-' + date.day).toISOString()));
     } else {
       console.log('not a date:', date);
     }
