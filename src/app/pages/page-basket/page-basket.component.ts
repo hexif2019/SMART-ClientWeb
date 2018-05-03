@@ -149,7 +149,7 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         return acc2 + produit.volume;
       }, 0);
     }, 0);
-    if (prixTotal < 50000 && poidsTotal < 1000000 && volumeTotal < 1000000000){
+    if (prixTotal < 50000 && poidsTotal < 1000000 && volumeTotal < 1000000000) {
       return true;
     } else {
       return false;

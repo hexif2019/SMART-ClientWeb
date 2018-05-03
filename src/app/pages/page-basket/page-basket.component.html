@@ -74,7 +74,7 @@
         </tr>
         </tbody>
       </table>
-      <div [hidden]="checkLimit()" id="paypal-button-container" class="float-right"></div>
+      <div [hidden]="!checkLimit()" id="paypal-button-container" class="float-right"></div>
       <!--<p>Date de livraison</p>
       <form class="form-inline">
         <div class="form-group">
