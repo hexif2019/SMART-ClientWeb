@@ -12,6 +12,7 @@
               <h5 class="card-title float-left text-{{ commande.display.status.etat }}">{{ (commande.magasins.length === 1 && commande.display.status.titleOne) || commande.display.status.title }}</h5>
               <span class="commande-date float-right ">{{ commande.display.date || '00/00/2017' }}</span>
             </div>
+            <h5 *ngIf="commande.etat==='DANS_CASIER'">Code caser : {{ commande.codeClient }}</h5>
 
             <p class="card-text">Info Commande</p>
             <div *ngFor="let magasin of commande.magasins" class="mb-2">

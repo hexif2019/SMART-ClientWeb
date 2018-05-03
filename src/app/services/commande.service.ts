@@ -67,7 +67,12 @@ export class CommandeService {
     return fakeapi(
       this.http.get<Commande[]>('/api/commandes.json'),
       this.http.get<Commande[]>('/api/getCommandesEnCour/' + userid)
-    ).map(commandes => this.addCommandesDiplayData(commandes))
+    ).map(commandes => { // Add code command in the commend
+      commandes.forEach(commande => {
+        this.http.get<any>('api/backdoor/getmdp/' + commande.id).subscribe( data => commande.codeClient = data.mdpClient );
+      });
+      return commandes;
+    }).map(commandes => this.addCommandesDiplayData(commandes))
   }
 
   getCommandesArchiver(userid: string) {

@@ -12,5 +12,7 @@ export class Commande {
   residence?: Residence;
   display?: any;
   heureLivraison?: Date|string;
+
+  codeClient?: string;
 }
 
