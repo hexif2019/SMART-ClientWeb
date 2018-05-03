@@ -133,6 +133,29 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
     console.log("TODO Payment fail"); //TODO
   }
 
+  private checkLimit(): boolean {
+    const prixTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.prix * produit.nb;
+      }, 0);
+    }, 0);
+    const poidsTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.poids;
+      }, 0);
+    }, 0);
+    const volumeTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.volume;
+      }, 0);
+    }, 0);
+    if (prixTotal < 50000 && poidsTotal < 1000000 && volumeTotal < 1000000000){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   ngAfterViewInit() {
     console.log("initPayBtn");
     this.scriptService.loadScript('paypal').then(() => {

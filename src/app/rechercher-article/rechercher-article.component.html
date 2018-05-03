@@ -35,7 +35,7 @@
             <div class="info">
               <h3>{{a.denomination}}</h3>
               <p class="descroption">Description: {{a.description}}</p>
-              <h5>{{a.prix/100*a.nb}} euros</h5>
+              <h5>{{a.prix*a.nb | prix}} euros</h5>
             </div>
             <div class="section" style="padding-bottom:20px;">
               <div class="form-group row">
