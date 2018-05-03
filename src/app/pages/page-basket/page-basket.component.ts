@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {Commande} from "../../models/commande";
 import {PanierService} from "../../services/panier.service";
@@ -6,6 +6,7 @@ import {Magasin} from "../../models/magasin.model";
 import {Article} from "../../models/article.model";
 import * as _ from "lodash";
 import {ScriptService} from "../../services/script.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-page-basket',
@@ -15,7 +16,7 @@ import {ScriptService} from "../../services/script.service";
 export class PageBasketComponent implements OnInit {
 
   panier: Commande;
-  infoArticles : {article:Article, magasin:Magasin}[];
+  infoArticles: { article: Article, magasin: Magasin }[];
 
   private paypalCfg = {
 
@@ -25,46 +26,22 @@ export class PageBasketComponent implements OnInit {
     commit: true,
 
     // payment() is called when the button is clicked
-    payment: () => {
-
-      // Set up a url on your server to create the payment
-      var CREATE_URL = '/api/pay';
-
-      // Make a call to your server to set up the payment
-      return this.getPaypal().request.post(CREATE_URL)
-        .then(function(res) {
-          return res.paymentID;
-        });
-    },
+    payment: () => this.payment(),
 
     // onAuthorize() is called when the buyer approves the payment
-    onAuthorize: (data, actions) => {
-
-      // Set up a url on your server to execute the payment
-      const EXECUTE_URL = '/api/pay/success';
-
-      // Set up the dat you need to pass to your server
-      const dataSend = {
-        paymentID: data.paymentID,
-        payerID: data.payerID
-      };
-
-      // Make a call to your server to execute the payment
-      return this.getPaypal().request.post(EXECUTE_URL, dataSend)
-        .then(function (res) {
-          window.alert('Payment Complete!');
-        });
-    }
+    onAuthorize: (data, actions) => this.onAuthorize(data, actions),
 
   };
 
-  msgError(msg: string){
+  msgError(msg: string) {
     console.log(msg);
   }
 
   constructor(private panierService: PanierService,
               private userService: UserService,
-              private scriptService: ScriptService) { }
+              private scriptService: ScriptService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.userService.requirLogin().then(user => {
@@ -77,8 +54,8 @@ export class PageBasketComponent implements OnInit {
               this.infoArticles,
               magasin.produits.map(article => {
                 return {
-                  article:article,
-                  magasin:magasin
+                  article: article,
+                  magasin: magasin
                 };
               })
             );
@@ -87,14 +64,44 @@ export class PageBasketComponent implements OnInit {
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
-    this.scriptService.loadScript('paypal').then(_=>{
+    this.scriptService.loadScript('paypal').then(() => {
       this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
     })
   }
 
   private getPaypal(): any {
     return window['paypal'];
+  }
 
+  private payment() {
+    console.log('payment');
+    return this.panierService.getPayToken(this.panier)
+        .then((res) => {
+          console.log('payment res : ', res);
+          return res.paymentID;
+        });
+  }
+
+  private onAuthorize(data, actions) {
+
+    // Set up the dat you need to pass to your server
+    const dataSend = {
+      paymentID: data.paymentID,
+      payerID: data.payerID
+    };
+
+    this.panierService.sendPayConfimatrion(dataSend)
+      .subscribe((res) => {
+        if (res === "success") {
+          this.router.navigateByUrl("/payment");
+        } else {
+          this.paymentFail();
+        }
+      });
+  }
+
+  private paymentFail(): any {
+    console.log("TODO Payment fail"); //TODO
   }
 
 }

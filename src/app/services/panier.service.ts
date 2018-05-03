@@ -181,4 +181,23 @@ export class PanierService {
     });
   }
 
+  getPayToken(panier: Commande): Promise<{paymentID:string}>{
+    return new Promise((resolve, reject)=>{
+      fakeapi(
+        this.http.get<{paymentID:string}>('/api/pay.json'),
+        this.http.post<{paymentID:string}>('/api/pay',panier),
+
+      ).subscribe(
+        res => resolve(res),
+        error => reject(error)
+      );
+    });
+  }
+
+  sendPayConfimatrion(dataSend: {paymentID: string | string; payerID: string}) {
+    return fakeapi(
+      Observable.create(observer => observer.next("success")),
+      this.http.post('/api/pay/success',dataSend)
+    )
+  }
 }
