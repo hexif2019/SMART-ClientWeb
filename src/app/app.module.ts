@@ -26,6 +26,7 @@ import {PanierService} from './services/panier.service';
 import { PrixPipe } from './pipes/prix.pipe';
 import {CommandeService} from './services/commande.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ScriptService} from "./services/script.service";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -66,7 +67,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [UserService, ResidenceService, PanierService, CommandeService],
+  providers: [UserService, ResidenceService, PanierService, CommandeService, ScriptService],
   bootstrap: [AppComponent],
   exports: [BsDropdownModule, TooltipModule, ModalModule]
 })

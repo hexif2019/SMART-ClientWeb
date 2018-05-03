@@ -94,6 +94,7 @@ export class PanierService {
   }
 
   public updatePanier(userid: string,panier: Commande,  eventName: string, eventMsg ?: string, eventData ?: any): Observable<Commande>{
+    this.refreshPrix(panier);
     return fakeapi(
       this.http.get<Commande>('api/commande.json'),
       this.http.post<Commande>('api/updatePanier/', panier)
@@ -154,8 +155,8 @@ export class PanierService {
     });
   }
 
-  public changeDate(date: string) {
-    this.panier.heureLivraison = '2018-5-2';
+  public changeDate(date: Date|string) {
+    this.panier.heureLivraison = date;
   }
 
   public changeQteArticle(userid: string, magasin: Magasin, article: Article, qte: number):Observable<Commande>{
@@ -185,4 +186,30 @@ export class PanierService {
     });
   }
 
+  private refreshPrix(panier: Commande) {
+    panier.prix = panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.prix * produit.nb;
+      }, 0);
+    }, 0);
+  }
+  getPayToken(panier: Commande): Promise<{paymentID:string}>{
+    return new Promise((resolve, reject)=>{
+      fakeapi(
+        this.http.get<{paymentID:string}>('/api/pay.json'),
+        this.http.post<{paymentID:string}>('/api/pay',panier),
+
+      ).subscribe(
+        res => resolve(res),
+        error => reject(error)
+      );
+    });
+  }
+
+  sendPayConfimatrion(dataSend: {paymentID: string | string; payerID: string}) {
+    return fakeapi(
+      Observable.create(observer => observer.next("success")),
+      this.http.post('/api/pay/success',dataSend)
+    )
+  }
 }
