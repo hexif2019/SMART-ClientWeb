@@ -94,6 +94,7 @@ export class PanierService {
   }
 
   public updatePanier(userid: string,panier: Commande,  eventName: string, eventMsg ?: string, eventData ?: any): Observable<Commande>{
+    this.refreshPrix(panier);
     return fakeapi(
       this.http.get<Commande>('api/commande.json'),
       this.http.post<Commande>('api/updatePanier/', panier)
@@ -185,6 +186,13 @@ export class PanierService {
     });
   }
 
+  private refreshPrix(panier: Commande) {
+    panier.prix = panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.prix * produit.nb;
+      }, 0);
+    }, 0);
+  }
   getPayToken(panier: Commande): Promise<{paymentID:string}>{
     return new Promise((resolve, reject)=>{
       fakeapi(

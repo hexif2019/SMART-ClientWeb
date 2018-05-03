@@ -90,6 +90,17 @@ export class PageBasketComponent implements OnInit {
       console.log('not a date:', date);
     }
   }
+  changeQuantiteArticle(magasin: Magasin, article: Article, qte: number) {
+    this.userService.requirLogin().then(user => {
+      this.panierService.changeQteArticle(user.id, magasin, article, qte).subscribe(
+        panier => {
+          console.log('quantite change');
+          this.panier = panier;
+        },
+        error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
+      );
+    });
+  }
   private getPaypal(): any {
     return window['paypal'];
   }
