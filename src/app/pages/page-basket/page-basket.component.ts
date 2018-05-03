@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
-import {Commande} from '../../models/commande';
-import {PanierService} from '../../services/panier.service';
-import {Magasin} from '../../models/magasin.model';
-import {Article} from '../../models/article.model';
-import * as _ from 'lodash';
+import {UserService} from "../../services/user.service";
+import {Commande} from "../../models/commande";
+import {PanierService} from "../../services/panier.service";
+import {Magasin} from "../../models/magasin.model";
+import {Article} from "../../models/article.model";
+import * as _ from "lodash";
+import {ScriptService} from "../../services/script.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-page-basket',
@@ -17,12 +19,29 @@ export class PageBasketComponent implements OnInit {
   infoArticles: { article: Article, magasin: Magasin }[];
   dateLivraison;
 
+  private paypalCfg = {
+
+    env: 'sandbox', // sandbox | production
+
+    // Show the buyer a 'Pay Now' button in the checkout flow
+    commit: true,
+
+    // payment() is called when the button is clicked
+    payment: () => this.payment(),
+
+    // onAuthorize() is called when the buyer approves the payment
+    onAuthorize: (data, actions) => this.onAuthorize(data, actions),
+
+  };
+
   msgError(msg: string) {
     console.log(msg);
   }
 
   constructor(private panierService: PanierService,
-              private userService: UserService) {
+              private userService: UserService,
+              private scriptService: ScriptService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -46,6 +65,9 @@ export class PageBasketComponent implements OnInit {
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
+    this.scriptService.loadScript('paypal').then(() => {
+      this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
+    })
   }
 
   remove(article: Article, magasin: Magasin) {
@@ -68,4 +90,39 @@ export class PageBasketComponent implements OnInit {
       console.log('not a date:', date);
     }
   }
+  private getPaypal(): any {
+    return window['paypal'];
+  }
+
+  private payment() {
+    console.log('payment');
+    return this.panierService.getPayToken(this.panier)
+        .then((res) => {
+          console.log('payment res : ', res);
+          return res.paymentID;
+        });
+  }
+
+  private onAuthorize(data, actions) {
+
+    // Set up the dat you need to pass to your server
+    const dataSend = {
+      paymentID: data.paymentID,
+      payerID: data.payerID
+    };
+
+    this.panierService.sendPayConfimatrion(dataSend)
+      .subscribe((res) => {
+        if (res === "success") {
+          this.router.navigateByUrl("/payment");
+        } else {
+          this.paymentFail();
+        }
+      });
+  }
+
+  private paymentFail(): any {
+    console.log("TODO Payment fail"); //TODO
+  }
+
 }

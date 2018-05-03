@@ -61,7 +61,7 @@ export class PanierService {
   public getPagner(userid: string): Observable<Commande>{
     return fakeapi(
       this.http.get<Commande>('api/commande.json'),
-      this.http.get<Commande>('api/getPanier/${userid}')
+      this.http.get<Commande>('api/getPanier/' + userid)
     ).map(
       commande => {
         if (!_.isEqual(commande, this.panier)) {
@@ -79,7 +79,7 @@ export class PanierService {
   public getMagasinsOfResidence(residenceid: string){
     return fakeapi(
       this.http.get<Magasin[]>('api/listMagasins.json'),
-      this.http.get<Magasin[]>('api/getMagasinsOfResidence/${residenceid}')
+      this.http.get<Magasin[]>('api/getMagasinsOfResidence/' + residenceid)
     )
       .map(magasins => {
         magasins.forEach(magasin =>{
@@ -96,7 +96,7 @@ export class PanierService {
   public updatePanier(userid: string,panier: Commande,  eventName: string, eventMsg ?: string, eventData ?: any): Observable<Commande>{
     return fakeapi(
       this.http.get<Commande>('api/commande.json'),
-      this.http.post<Commande>('api/updatePanier/$(userid)', panier)
+      this.http.post<Commande>('api/updatePanier/', panier)
     ).map(panier => {
       this.setPanier(panier,  eventName, eventMsg, eventData);
       return panier;
@@ -185,4 +185,23 @@ export class PanierService {
     });
   }
 
+  getPayToken(panier: Commande): Promise<{paymentID:string}>{
+    return new Promise((resolve, reject)=>{
+      fakeapi(
+        this.http.get<{paymentID:string}>('/api/pay.json'),
+        this.http.post<{paymentID:string}>('/api/pay',panier),
+
+      ).subscribe(
+        res => resolve(res),
+        error => reject(error)
+      );
+    });
+  }
+
+  sendPayConfimatrion(dataSend: {paymentID: string | string; payerID: string}) {
+    return fakeapi(
+      Observable.create(observer => observer.next("success")),
+      this.http.post('/api/pay/success',dataSend)
+    )
+  }
 }

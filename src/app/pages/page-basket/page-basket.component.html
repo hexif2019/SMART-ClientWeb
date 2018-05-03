@@ -28,8 +28,8 @@
           <td class="col-sm-1 col-md-1" style="text-align: center">
             <input type="email" class="form-control" id="exampleInputEmail1" value={{a.article.nb}}>
           </td>
-          <td class="col-sm-1 col-md-1 text-center"><strong>{{a.article.prix}}€</strong></td>
-          <td class="col-sm-1 col-md-1 text-center"><strong>{{a.article.prix*a.article.nb}}€</strong></td>
+          <td class="col-sm-1 col-md-1 text-center"><strong>{{a.article.prix | prix}}€</strong></td>
+          <td class="col-sm-1 col-md-1 text-center"><strong>{{a.article.prix*a.article.nb | prix}}€</strong></td>
           <td class="col-sm-1 col-md-1">
             <button type="button" class="btn btn-danger" (click)="remove(a.article,a.magasin)">
               <span class="glyphicon glyphicon-remove"></span> Remove
@@ -39,7 +39,7 @@
         <tr>
           <td>  </td>
           <td colspan="3"><h5>Total des articles</h5></td>
-          <td class="text-right"><h5><strong>{{panier.prix}}€</strong></h5></td>
+          <td class="text-right"><h5><strong>{{panier.prix| prix}}€</strong></h5></td>
         </tr>
         <tr>
           <td>  </td>
@@ -51,7 +51,7 @@
           <td><h3>Total</h3></td>
           <td>  </td>
           <td>  </td>
-          <td class="text-right"><h3><strong>{{panier.prix+5}}€</strong></h3></td>
+          <td class="text-right"><h3><strong>{{panier.prix+500 | prix}}€</strong></h3></td>
         </tr>
         <tr>
           <td colspan="1"  align= "right"><h5>Date de livraison</h5></td>
@@ -102,3 +102,5 @@
     </div>-->
   </div>
 </div>
+
+<div id="paypal-button-container"></div>
