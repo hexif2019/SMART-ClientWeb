@@ -65,9 +65,6 @@ export class PageBasketComponent implements OnInit {
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
-    this.scriptService.loadScript('paypal').then(() => {
-      this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
-    })
   }
 
   remove(article: Article, magasin: Magasin) {
@@ -136,4 +133,9 @@ export class PageBasketComponent implements OnInit {
     console.log("TODO Payment fail"); //TODO
   }
 
+  initPayBtn() {
+    this.scriptService.loadScript('paypal').then(() => {
+      this.getPaypal().Button.render(this.paypalCfg, "#paypal-button-container")
+    });
+  }
 }

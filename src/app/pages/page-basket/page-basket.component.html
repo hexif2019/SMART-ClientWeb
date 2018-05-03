@@ -77,9 +77,8 @@
           <td>  </td>
           <td>  </td>
           <td>  </td>
-          <button type="button" class="btn btn-success">
-            Payer <span class="glyphicon glyphicon-play"></span>
-          </button>
+
+          <div id="paypal-button-container" (load)="initPayBtn()"></div>
         </tr>
         </tbody>
       </table>
@@ -104,4 +103,3 @@
   </div>
 </div>
 
-<div id="paypal-button-container"></div>
