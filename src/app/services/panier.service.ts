@@ -155,8 +155,8 @@ export class PanierService {
     });
   }
 
-  public changeDate(date: string) {
-    this.panier.heureLivraison = '2018-5-2';
+  public changeDate(date: Date|string) {
+    this.panier.heureLivraison = date;
   }
 
   public changeQteArticle(userid: string, magasin: Magasin, article: Article, qte: number):Observable<Commande>{
