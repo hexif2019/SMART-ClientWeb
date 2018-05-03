@@ -101,7 +101,7 @@ export class PanierService {
     ).map(panier => {
       this.setPanier(panier,  eventName, eventMsg, eventData);
       return panier;
-    })
+    });
   }
 
   public addArticle(userid: string, magasin: Magasin, article: Article, qte: number):Observable<Commande>{
