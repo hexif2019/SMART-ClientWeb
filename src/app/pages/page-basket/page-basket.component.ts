@@ -112,27 +112,27 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         panier => {
           console.log('quantite change');
           this.panier = panier;
+          this.panierService.getPagner(user.id).subscribe(
+            panier => {
+              console.log('refresh!');
+              this.panier = panier;
+              this.infoArticles = [];
+              panier.magasins.forEach(magasin => {
+                this.infoArticles = _.union(
+                  this.infoArticles,
+                  magasin.produits.map(article => {
+                    return {
+                      article: article,
+                      magasin: magasin
+                    };
+                  })
+                );
+              });
+            },
+            error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
+          );
         },
         error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
-      );
-      this.panierService.getPagner(user.id).subscribe(
-        panier => {
-          console.log('refresh!');
-          this.panier = panier;
-          this.infoArticles = [];
-          panier.magasins.forEach(magasin => {
-            this.infoArticles = _.union(
-              this.infoArticles,
-              magasin.produits.map(article => {
-                return {
-                  article: article,
-                  magasin: magasin
-                };
-              })
-            );
-          });
-        },
-        error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
   }
