@@ -68,7 +68,7 @@ export class PanierService {
           this.setPanier(
             commande,
             this.panier ? "reLoad" : "load",
-            this.panier ? "Votre panier a étais changer par une autre page!" : "Panier charger"
+            this.panier ? "Votre panier a été changé par une autre page!" : "Panier chargé"
           );
         }
         return this.panier;
@@ -166,12 +166,12 @@ export class PanierService {
         panier => {
           let magasinCommande = panier.magasins.find(magasinCommande => magasinCommande.id === magasin.id );
           if(!magasinCommande){ //pas de magasin dans cette commande
-            return observer.error("Cette article n'est plus dans votre pagnier");
+            return observer.error("Cet article n'est plus dans votre panier");
           }
 
           let articleCommande = magasinCommande.produits.find(produit => produit.denomination === article.denomination );
           if(!articleCommande){
-            return observer.error("Cette article n'est plus dans votre pagnier");
+            return observer.error("Cet article n'est plus dans votre panier");
           }
 
           articleCommande.nb = qte;

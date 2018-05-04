@@ -16,14 +16,14 @@ export class CommandeService {
       case 'PAYEMENT_EFFECTUE':
       case 'ATTENTE_CONFIRMATION_MAGASIN': return {etat: "success", title: "En attente de la confirmation des magasins", titleOne : "En attente de la confirmation du magasin"};
       case 'ANNULATION_CLIENT': return {etat: "danger", title: "Vous avez annulé la commande", titleOne : "Vous avez annulé la commande" };
-      case 'ANNULATION_SYSTEM': return {etat: "danger", title: "Votre commande ne peut pas être livrée à l'heure voulu", titleOne : "Votre commande ne peut pas être livrée à l'heure voulu" };
+      case 'ANNULATION_SYSTEM': return {etat: "danger", title: "Votre commande ne peut pas être livrée à l'heure voulu", titleOne : "Votre commande ne peut pas être livrée à l'heure voulue" };
       case 'ANNULATION_MAGASIN': return {etat: "danger", title: "Les magasins n'ont pas pus fournir les articles voulus", titleOne: "Le magasin n'a pas pus fournir les articles voulus" };
-      case 'VALIDE_MAGASINS_MAIS_MODIF': return {etat: "warning", title: "Certains aticles de votre commande on était modifié par un magasin", titleOne: "Certains aticles de votre commande on était modifié par le magasin" };
-      case 'ATTRIBUE_A_COURSIER': return {etat: "success", title: "Votre commande va bientôt arrivée"};
-      case 'EN_COURS_DE_LIVRAISON': return {etat: "success", title: "Votre commande est en chemin"};
-      case 'DANS_CASIER': return {etat: "success", title: "Votre commande vous attend"};
+      case 'VALIDE_MAGASINS_MAIS_MODIF': return {etat: "warning", title: "Certains aticles de votre commande ont été modifiés par un magasin", titleOne: "Certains articles de votre commande ont été modifiés par le magasin" };
+      case 'ATTRIBUE_A_COURSIER': return {etat: "success", title: "Votre commande va bientôt arriver"};
+      case 'EN_COURS_DE_LIVRAISON': return {etat: "success", title: "Votre commande est en cours de livraison"};
+      case 'DANS_CASIER': return {etat: "success", title: "Votre commande vous attends"};
       case 'RECUPERE_CLIENT': return {etat: "success", title: "Terminée"};
-      case 'CASIER_TIMEOUT': return {etat: "danger", title: "Vous n'avais pas récuperé votre commande!"};
+      case 'CASIER_TIMEOUT': return {etat: "danger", title: "Vous n'avez pas récuperé votre commande!"};
       default: return {etat: "danger", title: "Unknowd! : " + (statut || "undefined")}
     }
   }
@@ -32,7 +32,7 @@ export class CommandeService {
     switch (statut){
       case 'EDITION': return {etat: "danger", title: "Panier!"}; // (nomrmalement imposible)
       case 'PAYEMENT_EFFECTUE':
-      case 'ATTENTE_CONFIRMATION_MAGASIN': return {etat: "warning", title: "Attente de confirmation"};
+      case 'ATTENTE_CONFIRMATION_MAGASIN': return {etat: "warning", title: "En attente de confirmation"};
       case 'ANNULATION_CLIENT': return {etat: "danger", title: "Annulée" };
       case 'ANNULATION_SYSTEM': return {etat: "danger", title: "Annulée"};
       case 'ANNULATION_MAGASIN': return {etat: "danger", title: "Annulée par le magasin"};
@@ -42,7 +42,7 @@ export class CommandeService {
       case 'DANS_CASIER': return {etat: "success", title: "Livrée"};
       case 'RECUPERE_CLIENT': return {etat: "success", title: "Livrée"};
       case 'CASIER_TIMEOUT': return {etat: "success", title: "Livrée"};
-      default: return {etat: "danger", title: "Unknowd! : " + (statut || "undefined")}
+      default: return {etat: "danger", title: "Unknown : " + (statut || "undefined")}
     }
   }
 
