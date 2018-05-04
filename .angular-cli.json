@@ -10,7 +10,9 @@
       "assets": [
         { "glob": "**/*", "input": "./assets/fakeapi/", "output": "./api/" },
         { "glob": "**/*", "input": "./assets/fakeimg/", "output": "./img/" },
-        { "glob": "favicon.ico", "input": "./", "output": "./" }
+        { "glob": "**/*", "input": "./assets/img/", "output": "./img/" },
+        { "glob": "favicon.ico", "input": "./", "output": "./" },
+        { "glob": "favicon.png", "input": "./", "output": "./" }
       ],
       "index": "index.html",
       "main": "main.ts",
