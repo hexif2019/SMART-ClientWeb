@@ -8,7 +8,7 @@
       <input type="submit" name="login" class="login loginmodal-submit" ngClass="{disable: loadLogin}" value="Login" >
     </form>
     <div class="login-help">
-      <a href="javascript:void(0)"(click)="showRegister = true">Register</a>
+      <a href="javascript:void(0)"(click)="showRegister = true">S'inscrire</a>
     </div>
   </div>
   <div *ngIf="showRegister">
@@ -16,7 +16,7 @@
     <h1>Register</h1><br>
     <form (ngSubmit)="register()">
       <input type="text" name="nom" placeholder="Nom" [ngClass]="{disable: loadLogin}" [(ngModel)]="nom">
-      <input type="text" name="prenom" placeholder="Prenom" [ngClass]="{disable: loadLogin}" [(ngModel)]="prenom">
+      <input type="text" name="prenom" placeholder="Prénom" [ngClass]="{disable: loadLogin}" [(ngModel)]="prenom">
       <input type="email" name="email" placeholder="your.email@email.com" [ngClass]="{disable: loadLogin}" [(ngModel)]="email">
       <input type="password" name="pass" placeholder="Password" [ngClass]="{disable: loadLogin}" [(ngModel)]="password" #name="ngModel">
       <input type="text" name="codepostal" placeholder="Code Postal" max="5" [formControl]="codepostal">
@@ -39,7 +39,7 @@
       <input type="submit" name="login" class="login loginmodal-submit" [ngClass]="{disable: loadLogin}" value="Register" >
     </form>
     <div class="login-help">
-      <a href="javascript:void(0)" (click)="showRegister = false">Login</a>
+      <a href="javascript:void(0)" (click)="showRegister = false">Se connecter</a>
     </div>
   </div>
 </div>
