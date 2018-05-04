@@ -73,9 +73,27 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
       this.panierService.removeArticle(user.id, magasin, article).subscribe(
         panier => {
           this.panier = panier;
-          this.router.navigateByUrl('basket');
         },
         error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
+      );
+      this.panierService.getPagner(user.id).subscribe(
+        panier => {
+          console.log('refresh!');
+          this.panier = panier;
+          this.infoArticles = [];
+          panier.magasins.forEach(magasin => {
+            this.infoArticles = _.union(
+              this.infoArticles,
+              magasin.produits.map(article => {
+                return {
+                  article: article,
+                  magasin: magasin
+                };
+              })
+            );
+          });
+        },
+        error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
   }
@@ -94,14 +112,32 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         panier => {
           console.log('quantite change');
           this.panier = panier;
-          this.router.navigateByUrl('basket');
         },
         error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
+      );
+      this.panierService.getPagner(user.id).subscribe(
+        panier => {
+          console.log('refresh!');
+          this.panier = panier;
+          this.infoArticles = [];
+          panier.magasins.forEach(magasin => {
+            this.infoArticles = _.union(
+              this.infoArticles,
+              magasin.produits.map(article => {
+                return {
+                  article: article,
+                  magasin: magasin
+                };
+              })
+            );
+          });
+        },
+        error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
   }
 
-  /*refreshPanier() {
+  refreshPanier() {
     console.log('refresh!');
     this.userService.requirLogin().then(user => {
       this.panierService.getPagner(user.id).subscribe(
@@ -123,7 +159,7 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
       );
     });
-  }*/
+  }
 
   private getPaypal(): any {
     return window['paypal'];
