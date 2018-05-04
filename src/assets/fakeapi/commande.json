@@ -23,7 +23,7 @@
         "description": "A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty, but the burger can include many variations in structure, ingredients, and composition",
         "img": "https://en.wikipedia.org/wiki/Cheeseburger#/media/File:Cheeseburger.jpg",
         "nb": 2,
-        "prix": 320
+        "prix": 320000
       },
       {
         "id": "40002",
@@ -31,10 +31,10 @@
         "description": "A chili burger (also known as a chili size, or simply size, stemming from \"hamburger size\") is a type of hamburger",
         "img": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Chili_burger_%28cropped%29.jpg",
         "nb": 1,
-        "prix": 415
+        "prix": 41500
       }
     ],
-    "prix": 1055
+    "prix": 1055000000
   }
   ]
 }

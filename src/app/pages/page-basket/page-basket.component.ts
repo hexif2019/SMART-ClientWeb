@@ -76,6 +76,25 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         },
         error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
       );
+      this.panierService.getPagner(user.id).subscribe(
+        panier => {
+          console.log('refresh!');
+          this.panier = panier;
+          this.infoArticles = [];
+          panier.magasins.forEach(magasin => {
+            this.infoArticles = _.union(
+              this.infoArticles,
+              magasin.produits.map(article => {
+                return {
+                  article: article,
+                  magasin: magasin
+                };
+              })
+            );
+          });
+        },
+        error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
+      );
     });
   }
 
@@ -93,11 +112,55 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
         panier => {
           console.log('quantite change');
           this.panier = panier;
+          this.panierService.getPagner(user.id).subscribe(
+            panier => {
+              console.log('refresh!');
+              this.panier = panier;
+              this.infoArticles = [];
+              panier.magasins.forEach(magasin => {
+                this.infoArticles = _.union(
+                  this.infoArticles,
+                  magasin.produits.map(article => {
+                    return {
+                      article: article,
+                      magasin: magasin
+                    };
+                  })
+                );
+              });
+            },
+            error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
+          );
         },
         error => this.msgError('Erreur du MAJ du pagnier : ' + JSON.stringify(error))
       );
     });
   }
+
+  refreshPanier() {
+    console.log('refresh!');
+    this.userService.requirLogin().then(user => {
+      this.panierService.getPagner(user.id).subscribe(
+        panier => {
+          this.panier = panier;
+          this.infoArticles = [];
+          panier.magasins.forEach(magasin => {
+            this.infoArticles = _.union(
+              this.infoArticles,
+              magasin.produits.map(article => {
+                return {
+                  article: article,
+                  magasin: magasin
+                };
+              })
+            );
+          });
+        },
+        error => this.msgError('Erreur du chargement du pagnier : ' + JSON.stringify(error))
+      );
+    });
+  }
+
   private getPaypal(): any {
     return window['paypal'];
   }
@@ -131,6 +194,29 @@ export class PageBasketComponent implements OnInit, AfterViewInit {
 
   private paymentFail(): any {
     console.log("TODO Payment fail"); //TODO
+  }
+
+  private checkLimit(): boolean {
+    const prixTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.prix * produit.nb;
+      }, 0);
+    }, 0);
+    const poidsTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.poids;
+      }, 0);
+    }, 0);
+    const volumeTotal = this.panier.magasins.reduce((acc, magasin) => {
+      return acc + magasin.produits.reduce((acc2, produit) => {
+        return acc2 + produit.volume;
+      }, 0);
+    }, 0);
+    if (prixTotal < 50000 && poidsTotal < 1000000 && volumeTotal < 1000000000) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ngAfterViewInit() {

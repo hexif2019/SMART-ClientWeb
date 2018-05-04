@@ -1,14 +1,18 @@
 <div class="container">
   <div class="row">
     <div class="col-12" [ngClass]="{'col-md-7': currentCommandes && currentCommandes.length && oldCommandes && oldCommandes.length}">
+      <h2>Vos commandes</h2>
+      <div *ngIf="currentCommandes && currentCommandes.length===0">
+        <h3>Pas de Commandes</h3>
+      </div>
       <div *ngIf="currentCommandes && currentCommandes.length" class="commandes-en-cour">
-        <h2>Vos commandes</h2>
-        <div *ngFor="let commande of oldCommandes" class="card border-{{ commande.display.status.etat }} mb-4">
+        <div *ngFor="let commande of currentCommandes" class="card border-{{ commande.display.status.etat }} mb-4">
           <div class="card-body">
             <div class="clearfix">
               <h5 class="card-title float-left text-{{ commande.display.status.etat }}">{{ (commande.magasins.length === 1 && commande.display.status.titleOne) || commande.display.status.title }}</h5>
               <span class="commande-date float-right ">{{ commande.display.date || '00/00/2017' }}</span>
             </div>
+            <h5 *ngIf="commande.etat==='DANS_CASIER'">Code caser : {{ commande.codeClient }}</h5>
 
             <p class="card-text">Info Commande</p>
             <div *ngFor="let magasin of commande.magasins" class="mb-2">

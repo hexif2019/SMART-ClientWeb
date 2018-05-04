@@ -5,13 +5,15 @@
         <div>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-            [(ngModel)]="magasinKeyWords" name="kwm">
+                   [(ngModel)]="magasinKeyWords" name="kwm">
           </form>
         </div>
         <div class="magasins">
           <div class="list-group">
-            <a *ngFor="let m of magasins | filter : magasinKeyWords" href="javascript:void(0)" (click)="selectMagasin(m)" class="list-group-item list-group-item-action flex-column align-items-start" [ngClass]="{active:m === magasinSelectioner}" >
-              <div class= "d-flex w-100 justify-content-between">
+            <a *ngFor="let m of magasins | filter : magasinKeyWords" href="javascript:void(0)"
+               (click)="selectMagasin(m)" class="list-group-item list-group-item-action flex-column align-items-start"
+               [ngClass]="{active:m === magasinSelectioner}">
+              <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{m.denomination}}</h5>
               </div>
               <p class="mb-1">{{m.description}}</p>
@@ -30,14 +32,13 @@
                      [(ngModel)]="articleKeyWords" name="kwa">
             </form>
           </div>
-          <div data-price="290" class="item" *ngFor="let a of magasinSelectioner.produits | filter : articleKeyWords">
+          <div class="item" *ngFor="let a of magasinSelectioner.produits | filter : articleKeyWords">
             <img style="max-width:100%;" src="{{a.img}}"/>
             <div class="info">
               <h3>{{a.denomination}}</h3>
-              <p class="descroption">Description: {{a.description}}</p>
-              <h5>{{a.prix/100*a.nb}} euros</h5>
+              <h5>{{a.prix*a.nb | prix}} euros</h5>
             </div>
-            <div class="section" style="padding-bottom:20px;">
+            <div class="section">
               <div class="form-group row">
                 <label for="number-input" class="col-4 col-form-label">Nombre</label>
                 <div class="col-8">
@@ -47,12 +48,10 @@
                 </div>
               </div>
             </div>
-            <div class="section" style="padding-bottom:20px;">
-              <div *ngIf="a.display.isBuyed" class="msg">
-                article ajouté
-              </div>
-              <button class="btn btn-success" (click)="ajouterAuPanier(a,a.nb)">Ajouter</button>
+            <div *ngIf="a.display.isBuyed" class="msg">
+              article ajouté
             </div>
+            <button class="btn btn-success" (click)="ajouterAuPanier(a,a.nb)">Ajouter</button>
           </div>
         </div>
       </div>

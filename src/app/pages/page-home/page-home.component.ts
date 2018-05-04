@@ -21,7 +21,10 @@ export class PageHomeComponent implements OnInit {
 
   ngOnInit() {
     this.userService.requirLogin().then(user =>{
-      this.commandeService.getCommandesEnCour(user.id).subscribe(commandes => this.currentCommandes = commandes );
+      this.commandeService.getCommandesEnCour(user.id).subscribe(commandes => {
+        this.currentCommandes = commandes;
+        console.log(this.currentCommandes);
+      } );
       this.commandeService.getLastCommandes(user.id).subscribe(commandes => this.oldCommandes = commandes );
     });
   }
